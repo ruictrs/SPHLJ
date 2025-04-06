@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            transform: scale(0.8);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        
+        .message p {
+            margin-bottom: 15px;
+        }
+        
+        .emoticon {
+            font-size: 1.8rem;
+            margin: 0 5px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .cake {
+            animation-delay: 0.2s;
+        }
+        
+        .rose {
+            animation-delay: 0.5s;
+        }
+        
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f06;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .signature {
+            font-style: italic;
+            color: #666;
+            margin-top: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .floating-object {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        
+        .balloon {
+            width: 50px;
+            height: 60px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            animation-duration: 8s;
+        }
+        
+        .balloon::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background-color: #ff6b6b;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .balloon::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background-color: #ddd;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .balloon:nth-child(1) {
+            background-color: #ff6b6b;
+            top: -100px;
+            left: 10%;
+            animation-delay: 0.5s;
+        }
+        
+        .balloon:nth-child(2) {
+            background-color: #4ecdc4;
+            top: -120px;
+            right: 15%;
+            animation-delay: 1s;
+        }
+        
+        .balloon:nth-child(3) {
+            background-color: #ffe66d;
+            top: -80px;
+            left: 70%;
+            animation-delay: 1.5s;
+        }
+        
+        .balloon:nth-child(4) {
+            background-color: #6a0572;
+            top: -150px;
+            right: 20%;
+            animation-delay: 2s;
+        }
+        
+        .reveal-btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        }
+        
+        .reveal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .hidden-message {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .hidden-message.active {
+            max-height: 500px;
+        }
+        
+        /* 新增的动画和装饰元素 */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        .gift {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #ff6b6b;
+            border-radius: 5px;
+            animation: float 8s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        .gift::before {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 15px;
+            background-color: #4ecdc4;
+            top: -10px;
+            left: -5px;
+            border-radius: 5px;
+        }
+        
+        .gift::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #4ecdc4;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+        }
+        
+        .ribbon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #4ecdc4;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+        
+        .gift:nth-child(1) {
+            background-color: #ff6b6b;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0.5s;
+        }
+        
+        .gift:nth-child(2) {
+            background-color: #4ecdc4;
+            top: 15%;
+            right: 8%;
+            animation-delay: 1s;
+        }
+        
+        .gift:nth-child(3) {
+            background-color: #ffe66d;
+            bottom: 10%;
+            left: 8%;
+            animation-delay: 1.5s;
+        }
+        
+        .gift:nth-child(4) {
+            background-color: #6a0572;
+            bottom: 15%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: heartFloat 5s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes heartFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+                opacity: 1;
+            }
+        }
+        
+        .heart:nth-child(1) {
+            top: 20%;
+            left: 15%;
+            color: #ff6b6b;
+            animation-delay: 0.5s;
+        }
+        
+        .heart:nth-child(2) {
+            top: 25%;
+            right: 15%;
+            color: #4ecdc4;
+            animation-delay: 1s;
+        }
+        
+        .heart:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            color: #ffe66d;
+            animation-delay: 1.5s;
+        }
+        
+        .heart:nth-child(4) {
+            bottom: 25%;
+            right: 15%;
+            color: #6a0572;
+            animation-delay: 2s;
+        }
+        
+        /* 新增的交互效果 */
+        .container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+        
+        .message p:hover {
+            color: #ff6b6b;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="confetti-container"></div>
+    
+    <!-- 新增的装饰元素 -->
+    <div class="stars" id="stars-container"></div>
+    
+    <div class="gift">
+        <div class="ribbon"></div>
+    </div>
+    <div class="gift">
+        <div class="ribbon"></div>
+    </div>
+    <div class="gift">
+        <div class="ribbon"></div>
+    </div>
+    <div class="gift">
+        <div class="ribbon"></div>
+    </div>
+    
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    <div class="heart">❤</div>
+    
+    <div class="floating-object balloon"></div>
+    <div class="floating-object balloon"></div>
+    <div class="floating-object balloon"></div>
+    <div class="floating-object balloon"></div>
+    
+    <div class="container">
+        <h1>亲爱的同桌</h1>
+        
+        <div class="message">
+            <p>祝你生日快乐</p>
+            <p>但未来的生活并非都是欢愉</p>
+            <p>失意低谷在所难免</p>
+            <p>那就祝你勇敢坚强 乐观豁达</p>
+            <p>经得住成长道路上的曲折</p>
+            <p>我亲爱的好同桌</p>
+            <p>你快乐才是最大的快乐</p>
+            
+            <div class="emoticons">
+                <span class="emoticon cake">🎂</span>
+                <span class="emoticon cake">🎂</span>
+                <span class="emoticon cake">🎂</span>
+                <span class="emoticon rose">🌹</span>
+                <span class="emoticon rose">🌹</span>
+                <span class="emoticon rose">🌹</span>
+            </div>
+        </div>
+        
+        <div class="signature">—— 你的好同桌</div>
+        
+        <button class="reveal-btn" id="reveal-btn">点击展开祝福</button>
+        
+        <div class="hidden-message" id="hidden-message">
+            <p>虽然我们每天都在一起学习，但今天我想对你说一些特别的话。</p>
+            <p>感谢你一直以来的陪伴，无论是开心还是难过，你总是在我身边。</p>
+            <p>希望新的一岁，你能实现所有的愿望，遇到更多美好的事情。</p>
+            <p>愿你的笑容永远灿烂，愿你的生活充满阳光！</p>
+            <p>生日快乐！</p>
+        </div>
+    </div>
+    
+    <script>
+        // 创建彩带动画
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#6a0572', '#1a535c'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = Math.random() * 5 + 5 + 's';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(confetti);
+            }
+        }
+        
+        // 创建星星背景
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        // 点击按钮显示隐藏内容
+        document.getElementById('reveal-btn').addEventListener('click', function() {
+            const hiddenMessage = document.getElementById('hidden-message');
+            hiddenMessage.classList.add('active');
+            this.style.display = 'none';
+            
+            // 显示隐藏内容时增加额外的动画效果
+            hiddenMessage.style.animation = 'fadeIn 1s ease forwards';
+        });
+        
+        // 页面加载完成后执行
+        window.addEventListener('load', function() {
+            createConfetti();
+            createStars();
+            
+            // 添加鼠标移动时的互动效果
+            document.addEventListener('mousemove', function(e) {
+                const balloons = document.querySelectorAll('.balloon');
+                const gifts = document.querySelectorAll('.gift');
+                
+                balloons.forEach((balloon, index) => {
+                    const moveX = (e.clientX / window.innerWidth) * 20 - 10;
+                    const moveY = (e.clientY / window.innerHeight) * 20 - 10;
+                    balloon.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                });
+                
+                gifts.forEach((gift, index) => {
+                    const moveX = -(e.clientX / window.innerWidth) * 10 + 5;
+                    const moveY = -(e.clientY / window.innerHeight) * 10 + 5;
+                    gift.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                });
+            });
+        });
+        
+        // 添加点击文字的互动效果
+        document.querySelectorAll('.message p').forEach(paragraph => {
+            paragraph.addEventListener('click', function() {
+                this.style.color = '#ff6b6b';
+                setTimeout(() => {
+                    this.style.color = '#333';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
