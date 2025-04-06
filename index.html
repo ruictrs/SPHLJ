@@ -35,6 +35,8 @@
             opacity: 0;
             animation: fadeIn 1s ease forwards 0.5s;
             transition: all 0.3s ease;
+            overflow-y: auto;
+            max-height: 90vh;
         }
         
         @keyframes fadeIn {
@@ -47,12 +49,12 @@
         h1 {
             color: #ff6b6b;
             margin-bottom: 30px;
-            font-size: 2rem;
+            font-size: 1.8rem;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
         
         .message {
-            font-size: 1.2rem;
+            font-size: 1rem;
             line-height: 1.8;
             color: #333;
             margin-bottom: 40px;
@@ -63,7 +65,7 @@
         }
         
         .emoticon {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin: 0 5px;
             animation: bounce 2s infinite;
         }
@@ -114,7 +116,7 @@
             font-style: italic;
             color: #666;
             margin-top: 30px;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .floating-object {
@@ -214,7 +216,7 @@
             overflow: hidden;
             transition: max-height 0.5s ease;
             margin-top: 20px;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .hidden-message.active {
@@ -422,8 +424,6 @@
             <div class="emoticons">
                 <span class="emoticon cake">🎂</span>
                 <span class="emoticon cake">🎂</span>
-                <span class="emoticon cake">🎂</span>
-                <span class="emoticon rose">🌹</span>
                 <span class="emoticon rose">🌹</span>
                 <span class="emoticon rose">🌹</span>
             </div>
@@ -431,7 +431,7 @@
         
         <div class="signature">—— 你的好同桌</div>
         
-        <button class="reveal-btn" id="reveal-btn">点击展开祝福</button>
+        <button class="reveal-btn" id="reveal-btn">点击展开完整祝福</button>
         
         <div class="hidden-message" id="hidden-message">
             <p>虽然我们每天都在一起学习，但今天我想对你说一些特别的话。</p>
